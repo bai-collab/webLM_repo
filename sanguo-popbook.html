@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>三國志 3D 互動立體繪本</title>
+<link rel="stylesheet" href="assets/sanguo-popbook.css" />
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <canvas id="webgl"></canvas><canvas id="trail"></canvas>
+  <div id="topbar"><div id="brand" class="glass"><div class="title">三國志・立體繪本</div><div class="subtitle">點開一本書，走進故事裡</div></div><button id="soundBtn" aria-label="切換音樂">🔊</button></div>
+  <div id="bookChooser">
+    <button class="bookChip" data-book="0">🌸 桃園三結義</button><button class="bookChip" data-book="1">🪶 草船借箭</button><button class="bookChip" data-book="2">🎵 空城計</button>
+  </div>
+  <section id="narration" class="glass hidden"><div id="sceneTitle"></div><div id="storyText"></div><div id="hintText"></div><button id="chatBtn">💬 和角色說話</button><button id="nextBtn">翻到下一頁 →</button></section>
+  <div id="lockOverlay"></div>
+  <div id="quiz"><div class="quizCard glass"><div class="quizKicker">故事小挑戰</div><div class="quizQ" id="quizQ"></div><div class="answers" id="answers"></div><div class="quizFeedback" id="quizFeedback"></div><div class="badge" id="badge"><span class="badgeIcon" id="badgeIcon"></span><span id="badgeText"></span></div><button class="closeQuiz" id="closeQuiz">把徽章收進書袋</button></div></div>
+  <div id="ending"><div class="endCard glass"><h1>三冊故事，都讀完了！</h1><p>真正厲害的力量，不只在武藝與計謀，也在同心、觀察與冷靜。</p><div class="badges" id="endBadges"></div><button class="restart" id="restartBtn">回到書架再讀一次</button></div></div>
+  <div id="chatBackdrop"></div>
+  <aside id="chatPanel" class="glass" aria-label="角色對話面板">
+    <div class="chatHeader">
+      <div>
+        <div class="chatKicker">WebLLM 語意角色對話</div>
+        <div class="chatTitle" id="chatCharacterName">請先選一位角色</div>
+        <div class="chatSub" id="chatSceneInfo">在目前場景中，和角色聊聊吧。</div>
+      </div>
+      <button class="chatClose" id="chatCloseBtn" aria-label="關閉對話">✕</button>
+    </div>
+    <div class="chatBody">
+      <div class="chatRow">
+        <select id="chatCharacterSelect" aria-label="選擇角色"></select>
+        <button class="smallBtn secondary" id="loadModelBtn">載入語意模型</button>
+      </div>
+      <div class="statusBox">
+        <div class="statusLine" id="llmStatus">尚未載入語意模型。第一次使用會下載較小型 SmolLM2 模型並存入 IndexedDB。</div>
+        <div class="progressOuter"><div class="progressInner" id="llmProgress"></div></div>
+        <div class="supportHint" id="webgpuHint"></div>
+      </div>
+      <div class="quickPrompts" id="quickPrompts"></div>
+      <div id="chatMessages"></div>
+      <div class="chatInputWrap">
+        <textarea id="chatInput" placeholder="例如：你為什麼要這麼做？你最重視什麼？" maxlength="180"></textarea>
+        <div class="chatActions">
+          <button class="smallBtn secondary" id="clearChatBtn">清除對話</button>
+          <button class="smallBtn" id="sendChatBtn">送出問題</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div id="loading">正在打開書房<span class="loadingDot">…</span></div><div id="error"></div>
+</div>
+<script type="module" src="assets/sanguo-popbook.js"></script>
+</body>
+</html>
